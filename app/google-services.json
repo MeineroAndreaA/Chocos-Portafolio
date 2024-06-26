@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1060260497377",
+    "project_id": "portafolio-chocos",
+    "storage_bucket": "portafolio-chocos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1060260497377:android:7e6e98537bd054268bb4a0",
+        "android_client_info": {
+          "package_name": "com.aam.chocos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1060260497377-7ra4fnalfduj8enuo77qe5aonqe121ca.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.aam.chocos",
+            "certificate_hash": "5066511297e024b74c1370295077527f0652b486"
+          }
+        },
+        {
+          "client_id": "1060260497377-3ro89nueohpgdbv19lktp6oe1jggfmn5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBixpoVoSU0eLEEE3R7LCR7SWYORSk_Ai8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1060260497377-3ro89nueohpgdbv19lktp6oe1jggfmn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
