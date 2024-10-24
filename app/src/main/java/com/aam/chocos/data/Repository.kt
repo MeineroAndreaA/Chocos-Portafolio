@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialCancellationException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -16,36 +17,19 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.security.MessageDigest
 import java.util.UUID
+import javax.inject.Inject
 
-class Repository {
+class Repository @Inject constructor(
+    private val credentialManager: CredentialManager,
+    private val googleRequest: GetCredentialRequest
+) {
     private suspend fun googleSignIn(context: Context): Flow<Result<AuthResult>> {
         val firebaseAuth = FirebaseAuth.getInstance()
         return callbackFlow {
             try {
-                // Initialize Credential Manager
-                val credentialManager: CredentialManager = CredentialManager.create(context)
-
-                // Generate a nonce (a random number used once)
-                val ranNonce: String = UUID.randomUUID().toString()
-                val bytes: ByteArray = ranNonce.toByteArray()
-                val md: MessageDigest = MessageDigest.getInstance("SHA-256")
-                val digest: ByteArray = md.digest(bytes)
-                val hashedNonce: String = digest.fold("") { str, it -> str + "%02x".format(it) }
-
-                // Set up Google ID option
-                val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
-                    .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId("YOUR_WEB_CLIENT_ID")
-                    .setNonce(hashedNonce)
-                    .build()
-
-                // Request credentials
-                val request: GetCredentialRequest = GetCredentialRequest.Builder()
-                    .addCredentialOption(googleIdOption)
-                    .build()
-
                 // Get the credential result
-                val result = credentialManager.getCredential(context, request)
+                val result: GetCredentialResponse =
+                    credentialManager.getCredential(context, googleRequest)
                 val credential = result.credential
 
                 // Check if the received credential is a valid Google ID Token

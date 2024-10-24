@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun LoginUI(
-    state: SignInState?,
     onSignInClick: () -> Unit
 ) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -36,15 +37,44 @@ android {
         jvmTarget = "1.8"
     }
 
-    buildFeatures {
-        compose = true
-    }
+        buildFeatures {
+            buildConfig = true
+            compose = true
+        }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = false
+        }
+    }
+
+    sourceSets {
+        getByName("test") {
+            assets.srcDirs("src/test/assets/")
+        }
+        getByName("androidTest") {
+            assets.srcDirs("src/androidTest/assets/")
         }
     }
 }
@@ -75,6 +105,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation (libs.lottie.compose)
+    implementation(libs.androidx.hilt.lifecycle.viewmodel)
     testImplementation(libs.androidx.core)
     testImplementation(libs.androidx.runner)
     testImplementation(libs.androidx.junit)
@@ -85,6 +116,39 @@ dependencies {
     testImplementation(libs.androidx.junit)
     testImplementation(libs.androidx.espresso.core)
     testImplementation(libs.mockwebserver)
+
+
+    // ViewModel
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    // ViewModel utilities for Compose
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    // LiveData
+    implementation (libs.androidx.lifecycle.livedata.ktx)
+    // Lifecycles only (without ViewModel or LiveData)
+    implementation (libs.androidx.lifecycle.runtime.ktx)
+    // Lifecycle utilities for Compose
+    implementation (libs.androidx.lifecycle.runtime.compose)
+
+    // Saved state module for ViewModel
+    implementation (libs.lifecycle.viewmodel.savedstate)
+
+    // Annotation processor
+    ksp (libs.androidx.lifecycle.compiler)
+    // alternately - if using Java8, use the following instead of lifecycle-compiler
+    implementation (libs.androidx.lifecycle.common.java8)
+
+    // optional - helpers for implementing LifecycleOwner in a Service
+    implementation (libs.androidx.lifecycle.service)
+
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    implementation (libs.androidx.lifecycle.process)
+
+    // optional - ReactiveStreams support for LiveData
+    implementation (libs.androidx.lifecycle.reactivestreams.ktx)
+
+    // optional - Test helpers for Lifecycle runtime
+    testImplementation (libs.androidx.lifecycle.runtime.testing)
+
 
     //Firebase
     implementation(platform(libs.firebase.bom))
